@@ -84,25 +84,25 @@
 
 
 
-<meta name="description" content="U-Boot 相关前置知识Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
+<meta name="description" content="Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
 Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角度通常可以分为以下4个层次。
 
-引导加载程序，包括固件中的 boot 代码和 Bootloade">
+引导加载程序，包括固件中的 boot 代码和 Bootloader。 x86 会先运行 B">
 <meta property="og:type" content="article">
 <meta property="og:title" content="U-Boot 相关前置知识">
 <meta property="og:url" content="http://yoursite.com/2016/09/30/U-Boot-移植/index.html">
 <meta property="og:site_name" content="Marc's Blog">
-<meta property="og:description" content="U-Boot 相关前置知识Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
+<meta property="og:description" content="Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
 Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角度通常可以分为以下4个层次。
 
-引导加载程序，包括固件中的 boot 代码和 Bootloade">
-<meta property="og:updated_time" content="2016-09-30T16:28:15.217Z">
+引导加载程序，包括固件中的 boot 代码和 Bootloader。 x86 会先运行 B">
+<meta property="og:updated_time" content="2016-10-02T13:30:30.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="U-Boot 相关前置知识">
-<meta name="twitter:description" content="U-Boot 相关前置知识Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
+<meta name="twitter:description" content="Bootloader能将操作系统内核复制到内存中运行，这段程序为 Bootloader。Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。
 Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角度通常可以分为以下4个层次。
 
-引导加载程序，包括固件中的 boot 代码和 Bootloade">
+引导加载程序，包括固件中的 boot 代码和 Bootloader。 x86 会先运行 B">
 
 
 
@@ -343,7 +343,7 @@ Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角�
       
 
       
-        <h1 id="U-Boot-相关前置知识"><a href="#U-Boot-相关前置知识" class="headerlink" title="U-Boot 相关前置知识"></a>U-Boot 相关前置知识</h1><h2 id="Bootloader"><a href="#Bootloader" class="headerlink" title="Bootloader"></a>Bootloader</h2><p>能将操作系统内核复制到内存中运行，这段程序为 Bootloader。<br>Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。</p>
+        <h2 id="Bootloader"><a href="#Bootloader" class="headerlink" title="Bootloader"></a>Bootloader</h2><p>能将操作系统内核复制到内存中运行，这段程序为 Bootloader。<br>Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。</p>
 <h2 id="Bootloader-的结构和启动过程"><a href="#Bootloader-的结构和启动过程" class="headerlink" title="Bootloader 的结构和启动过程"></a>Bootloader 的结构和启动过程</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>嵌入式 Linux 系统从软件的角度通常可以分为以下4个层次。</p>
 <ol>
 <li>引导加载程序，包括固件中的 boot 代码和 Bootloader。 x86 会先运行 BIOS 中的固件，然后才运行硬盘上的第一个分区（MBR）中的 Bootloader。大多数嵌入式系统中没有固件，Bootloader 是上电后执行的第一个程序；</li>
@@ -559,6 +559,10 @@ Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角�
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/10/02/arm-addressing/" rel="prev" title="ARM 汇编常用寻址方式">
+                ARM 汇编常用寻址方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -629,7 +633,7 @@ Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -646,7 +650,7 @@ Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -686,7 +690,7 @@ Bootloader 的结构和启动过程概述嵌入式 Linux 系统从软件的角�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#U-Boot-相关前置知识"><span class="nav-number">1.</span> <span class="nav-text">U-Boot 相关前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootloader"><span class="nav-number">1.1.</span> <span class="nav-text">Bootloader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootloader-的结构和启动过程"><span class="nav-number">1.2.</span> <span class="nav-text">Bootloader 的结构和启动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.2.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阶段"><span class="nav-number">1.2.2.</span> <span class="nav-text">阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bootloader-与内核的交互"><span class="nav-number">1.2.3.</span> <span class="nav-text">Bootloader 与内核的交互</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-ATAG-CORE"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">标记 ATAG_CORE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置内存标记"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">设置内存标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置命令行标记"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">设置命令行标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置标记-ATAG-NONE"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">设置标记 ATAG_NONE</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#U-Boot-分析与移植"><span class="nav-number">1.3.</span> <span class="nav-text">U-Boot 分析与移植</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U-Boot-源码结构"><span class="nav-number">1.3.1.</span> <span class="nav-text">U-Boot 源码结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#U-Boot-的配置、编译、连接过程"><span class="nav-number">1.3.2.</span> <span class="nav-text">U-Boot 的配置、编译、连接过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译和连接"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">编译和连接</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootloader"><span class="nav-number">1.</span> <span class="nav-text">Bootloader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootloader-的结构和启动过程"><span class="nav-number">2.</span> <span class="nav-text">Bootloader 的结构和启动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">2.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阶段"><span class="nav-number">2.2.</span> <span class="nav-text">阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bootloader-与内核的交互"><span class="nav-number">2.3.</span> <span class="nav-text">Bootloader 与内核的交互</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-ATAG-CORE"><span class="nav-number">2.3.1.</span> <span class="nav-text">标记 ATAG_CORE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置内存标记"><span class="nav-number">2.3.2.</span> <span class="nav-text">设置内存标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置命令行标记"><span class="nav-number">2.3.3.</span> <span class="nav-text">设置命令行标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置标记-ATAG-NONE"><span class="nav-number">2.3.4.</span> <span class="nav-text">设置标记 ATAG_NONE</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#U-Boot-分析与移植"><span class="nav-number">3.</span> <span class="nav-text">U-Boot 分析与移植</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U-Boot-源码结构"><span class="nav-number">3.1.</span> <span class="nav-text">U-Boot 源码结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#U-Boot-的配置、编译、连接过程"><span class="nav-number">3.2.</span> <span class="nav-text">U-Boot 的配置、编译、连接过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">3.2.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译和连接"><span class="nav-number">3.2.2.</span> <span class="nav-text">编译和连接</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>

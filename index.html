@@ -255,6 +255,152 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/02/arm-addressing/" itemprop="url">
+                  ARM 汇编常用寻址方式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-02T15:24:20+02:00" content="2016-10-02">
+              2016-10-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/学习/嵌入式/" itemprop="url" rel="index">
+                    <span itemprop="name">嵌入式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/02/arm-addressing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/02/arm-addressing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>寄存器直接寻址<br> 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。<br> 例如，<code>MOV R1,R2</code>  </li>
+<li>寄存器<strong>移位</strong>寻址<br> 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。<br> <code>MOV R0,R1,LSL #3</code>，这条指令将 <strong><code>R1</code> 的值</strong>左移三位，然后将结果放在 <code>R0</code> 中。  </li>
+<li>寄存器间接寻址<br> 指令中的地址码给出的是一个通用寄存器的编号，指令所需的操作数保存在寄存器指定地址的存储单元中，即寄存器为操作数的<strong>地址指针</strong>。<br> 例如，<code>LDR R1,[R2]</code>，这条指令将 <code>R2</code> 指向的存储单元中的数据读出保存在 <code>R1</code> 中。  </li>
+<li>基址寻址<br> 将基址寄存器的内容与指令中给出的偏移量相加，形成操作数的有效地址，常用于查表和数组操作。<br> 例如，<code>LDR R2,[R3,#0X0C]</code>，此语句将 <code>R3+0X0C</code> 处的数据存放到 <code>R2</code> 寄存器中。</li>
+<li>立即寻址<br> 立即寻址中，操作码字段后面的部分不是操作数地址而是操作数本身。<br> 例如，<code>MOV R1,#0XAA</code>，此语句将立即数 <code>0XAA</code> 存放到寄存器 <code>R0</code> 中。</li>
+</ol>
+<p>补充：叹号的用法  </p>
+<ol>
+<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写会第一个操作数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ldr r2, [r1, #12]! @ r1 ← r1 + 12 then r2 ← *r1</div><div class="line">ldr r2, [r0, r1]! @ r0 ← r0 + r1 then r2 ← *r0</div><div class="line">ldr r2, [r0, r1, lsl #2]! @ r0 ← r0 + r1*4 then r2 ← *r0</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>post-indexed addressing</code>，先赋值，再操作  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">str r2, [r1], +4 @ *r1 ← r2 then r1 ← r1 + 4</div><div class="line">str r0, [r1], r2 @ *r1 ← r0 then r1 ← r1 + r2 </div><div class="line">ldr r0, [r1], r2, lsl #3 @ r0 ← *r1 then r1 ← r1 + r2*8</div></pre></td></tr></table></figure></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/30/U-Boot-移植/" itemprop="url">
                   U-Boot 相关前置知识
                 </a>
@@ -337,7 +483,7 @@
       
         
           
-            <h1 id="U-Boot-相关前置知识"><a href="#U-Boot-相关前置知识" class="headerlink" title="U-Boot 相关前置知识"></a>U-Boot 相关前置知识</h1><h2 id="Bootloader"><a href="#Bootloader" class="headerlink" title="Bootloader"></a>Bootloader</h2><p>能将操作系统内核复制到内存中运行，这段程序为 Bootloader。<br>Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。</p>
+            <h2 id="Bootloader"><a href="#Bootloader" class="headerlink" title="Bootloader"></a>Bootloader</h2><p>能将操作系统内核复制到内存中运行，这段程序为 Bootloader。<br>Bootloader 是一段小程序，在系统上电时开始执行，初始化硬件设备，准备好软件环境，最后调用操作系统内核。</p>
 <h2 id="Bootloader-的结构和启动过程"><a href="#Bootloader-的结构和启动过程" class="headerlink" title="Bootloader 的结构和启动过程"></a>Bootloader 的结构和启动过程</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>嵌入式 Linux 系统从软件的角度通常可以分为以下4个层次。</p>
 <ol>
 <li>引导加载程序，包括固件中的 boot 代码和 Bootloader。 x86 会先运行 BIOS 中的固件，然后才运行硬盘上的第一个分区（MBR）中的 Bootloader。大多数嵌入式系统中没有固件，Bootloader 是上电后执行的第一个程序；</li>
@@ -828,7 +974,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -845,7 +991,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
