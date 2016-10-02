@@ -94,7 +94,7 @@
 <meta property="og:description" content="寄存器直接寻址 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。 例如，MOV R1,R2  
 寄存器移位寻址 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。 MOV R0,R1,LSL #3，这条指令将 R1 的值左移三位，然后将结果放在 R0 中。  
 寄存器间接寻址 指令中的地址码给出的是一个通用寄存器的编号，指令所需的">
-<meta property="og:updated_time" content="2016-10-02T13:30:07.425Z">
+<meta property="og:updated_time" content="2016-10-02T13:33:21.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ARM 汇编常用寻址方式">
 <meta name="twitter:description" content="寄存器直接寻址 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。 例如，MOV R1,R2  
@@ -349,7 +349,7 @@
 </ol>
 <p>补充：叹号的用法  </p>
 <ol>
-<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写会第一个操作数</p>
+<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写回方括号中的第一个操作数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ldr r2, [r1, #12]! @ r1 ← r1 + 12 then r2 ← *r1</div><div class="line">ldr r2, [r0, r1]! @ r0 ← r0 + r1 then r2 ← *r0</div><div class="line">ldr r2, [r0, r1, lsl #2]! @ r0 ← r0 + r1*4 then r2 ← *r0</div></pre></td></tr></table></figure>
 </li>
 <li><p><code>post-indexed addressing</code>，先赋值，再操作  </p>

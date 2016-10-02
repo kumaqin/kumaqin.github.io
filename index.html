@@ -346,7 +346,7 @@
 </ol>
 <p>补充：叹号的用法  </p>
 <ol>
-<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写会第一个操作数</p>
+<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写回方括号中的第一个操作数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ldr r2, [r1, #12]! @ r1 ← r1 + 12 then r2 ← *r1</div><div class="line">ldr r2, [r0, r1]! @ r0 ← r0 + r1 then r2 ← *r0</div><div class="line">ldr r2, [r0, r1, lsl #2]! @ r0 ← r0 + r1*4 then r2 ← *r0</div></pre></td></tr></table></figure>
 </li>
 <li><p><code>post-indexed addressing</code>，先赋值，再操作  </p>
