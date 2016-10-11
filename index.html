@@ -255,6 +255,139 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/10/bugs-in-uboot/" itemprop="url">
+                  移植新版 U-Boot 过程中设置环境变量遇到的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-10T18:45:00+02:00" content="2016-10-10">
+              2016-10-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/嵌入式/" itemprop="url" rel="index">
+                    <span itemprop="name">嵌入式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/10/bugs-in-uboot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/10/bugs-in-uboot/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>前几天在移植 <code>U-Boot 2016.09.01</code> 的过程中遇到一个问题，是关于 U-Boot 下的环境变量的。<br>想实现 <code>TFTP</code> 功能，需要在环境变量中写 <code>DM9000</code> 的 MAC 地址。使用 <code>set</code> 写入并没有问题，写入后直接使用 <code>tftp</code> 也可以正常运作。但是板子一复位就不能启动了，控制台也没有任何输出，只能重新刷入 <code>u-boot.bin</code> 文件。<br>起初以为是网卡驱动的问题，但是随后随便写入了一个环境变量，保存之后重启发现仍不能启动。看来和网卡驱动没有关系，是设置环境变量处出现了问题。随后在文件 <code>/include/configs/jz2440.h</code> 中定位到语句 <code>#define CONFIG_ENV_ADDR            (CONFIG_SYS_FLASH_BASE + 0x070000)</code>。这里的0x70000大小约为 448 KB，而查看 <code>u-boot.bin</code> 文件大小约为 520 KB，随着 U-Boot 版本的更新，其体积也必然会不断增大。考虑是不是地址太低，覆盖了程序代码区。于是在控制台中输入 <code>flinfo</code> 查看 NOR Flash 中的空间分布。输出如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">JZ2440 # flinfo                                                            </div><div class="line">                                                                                </div><div class="line">Bank # 1: CFI conformant flash (16 x 16)  Size: 2 MB in 35 Sectors              </div><div class="line">  AMD Standard command set, Manufacturer ID: 0xC2, Device ID: 0x2249            </div><div class="line">  Erase timeout: 16384 ms, write timeout: 1 ms                                  </div><div class="line">                                                                                </div><div class="line">  Sector Start Addresses:                                                       </div><div class="line">  00000000   RO   00004000   RO   00006000   RO   00008000   RO   00010000   RO </div><div class="line">  00020000   RO   00030000   RO   00040000   RO   00050000   RO   00060000   RO </div><div class="line">  00070000   RO   00080000   RO   00090000        000A0000        000B0000      </div><div class="line">  000C0000        000D0000        000E0000        000F0000        00100000      </div><div class="line">  00110000        00120000        00130000        00140000        00150000      </div><div class="line">  00160000        00170000        00180000        00190000        001A0000      </div><div class="line">  001B0000        001C0000        001D0000        001E0000        001F0000</div></pre></td></tr></table></figure></p>
+<p>从上即可看出从 <code>0x00000000</code> 到 <code>0x00080000</code> 均为程序代码区，若往里面写入环境变量必然会破坏代码区导致崩溃。<br>所以解决方案显而易见，将 <code>#define CONFIG_ENV_ADDR            (CONFIG_SYS_FLASH_BASE + 0x070000)</code> 中的 <code>0x070000</code> 改高，至少要大于 <code>0x00090000</code>。在此，我将其改成 ´0x120000´。写入环境变量后重启，仍能正常工作，问题解决。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/04/yocto-qt5-without-opengl/" itemprop="url">
                   i.MX 7Dual Yocto Qt 5 Building Without OpenGL
                 </a>
@@ -1132,7 +1265,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1140,7 +1273,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

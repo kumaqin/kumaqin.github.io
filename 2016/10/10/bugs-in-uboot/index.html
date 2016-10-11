@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="2015总结," />
+  <meta name="keywords" content="U-Boot," />
 
 
 
@@ -84,18 +84,16 @@
 
 
 
-<meta name="description" content="Back to the Netherlands八月二十二号回的荷兰，明天就正好一个月了。回国前心心念念暑假这两个月要好好学习，毕竟毕业就要找工作，结果是暑假完完全全荒废玩掉了。现在后悔也没有用了，不过要是两个月利用起来的话，可以学习很多知识。暑假这两个月也没去多少地方，回广西老家花了大半个月。陪爸妈去广西北海和涠洲岛玩了五天。之后也没有出去旅游，基本都是和高中同学在南京厮混。对于南京这座城市感觉">
+<meta name="description" content="前几天在移植 U-Boot 2016.09.01 的过程中遇到一个问题，是关于 U-Boot 下的环境变量的。想实现 TFTP 功能，需要在环境变量中写 DM9000 的 MAC 地址。使用 set 写入并没有问题，写入后直接使用 tftp 也可以正常运作。但是板子一复位就不能启动了，控制台也没有任何输出，只能重新刷入 u-boot.bin 文件。起初以为是网卡驱动的问题，但是随后随便写入了一个环">
 <meta property="og:type" content="article">
-<meta property="og:title" content="复写HelloWorld()">
-<meta property="og:url" content="http://yoursite.com/2016/09/21/helloworld/index.html">
+<meta property="og:title" content="移植新版 U-Boot 过程中设置环境变量遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2016/10/10/bugs-in-uboot/index.html">
 <meta property="og:site_name" content="Marc's Blog">
-<meta property="og:description" content="Back to the Netherlands八月二十二号回的荷兰，明天就正好一个月了。回国前心心念念暑假这两个月要好好学习，毕竟毕业就要找工作，结果是暑假完完全全荒废玩掉了。现在后悔也没有用了，不过要是两个月利用起来的话，可以学习很多知识。暑假这两个月也没去多少地方，回广西老家花了大半个月。陪爸妈去广西北海和涠洲岛玩了五天。之后也没有出去旅游，基本都是和高中同学在南京厮混。对于南京这座城市感觉">
-<meta property="og:image" content="http://odv98ux2r.bkt.clouddn.com/0917AMSTERDAM.jpg">
-<meta property="og:updated_time" content="2016-09-21T21:08:18.798Z">
+<meta property="og:description" content="前几天在移植 U-Boot 2016.09.01 的过程中遇到一个问题，是关于 U-Boot 下的环境变量的。想实现 TFTP 功能，需要在环境变量中写 DM9000 的 MAC 地址。使用 set 写入并没有问题，写入后直接使用 tftp 也可以正常运作。但是板子一复位就不能启动了，控制台也没有任何输出，只能重新刷入 u-boot.bin 文件。起初以为是网卡驱动的问题，但是随后随便写入了一个环">
+<meta property="og:updated_time" content="2016-10-11T16:50:16.237Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="复写HelloWorld()">
-<meta name="twitter:description" content="Back to the Netherlands八月二十二号回的荷兰，明天就正好一个月了。回国前心心念念暑假这两个月要好好学习，毕竟毕业就要找工作，结果是暑假完完全全荒废玩掉了。现在后悔也没有用了，不过要是两个月利用起来的话，可以学习很多知识。暑假这两个月也没去多少地方，回广西老家花了大半个月。陪爸妈去广西北海和涠洲岛玩了五天。之后也没有出去旅游，基本都是和高中同学在南京厮混。对于南京这座城市感觉">
-<meta name="twitter:image" content="http://odv98ux2r.bkt.clouddn.com/0917AMSTERDAM.jpg">
+<meta name="twitter:title" content="移植新版 U-Boot 过程中设置环境变量遇到的问题">
+<meta name="twitter:description" content="前几天在移植 U-Boot 2016.09.01 的过程中遇到一个问题，是关于 U-Boot 下的环境变量的。想实现 TFTP 功能，需要在环境变量中写 DM9000 的 MAC 地址。使用 set 写入并没有问题，写入后直接使用 tftp 也可以正常运作。但是板子一复位就不能启动了，控制台也没有任何输出，只能重新刷入 u-boot.bin 文件。起初以为是网卡驱动的问题，但是随后随便写入了一个环">
 
 
 
@@ -116,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/09/21/helloworld/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/10/bugs-in-uboot/"/>
 
-  <title> 复写HelloWorld() | Marc's Blog </title>
+  <title> 移植新版 U-Boot 过程中设置环境变量遇到的问题 | Marc's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -258,7 +256,7 @@
             
             
               
-                复写HelloWorld()
+                移植新版 U-Boot 过程中设置环境变量遇到的问题
               
             
           </h1>
@@ -270,8 +268,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-21T21:36:17+02:00" content="2016-09-21">
-              2016-09-21
+            <time itemprop="dateCreated" datetime="2016-10-10T18:45:00+02:00" content="2016-10-10">
+              2016-10-10
             </time>
           </span>
 
@@ -284,8 +282,20 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/生活/" itemprop="url" rel="index">
-                    <span itemprop="name">生活</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/嵌入式/" itemprop="url" rel="index">
+                    <span itemprop="name">嵌入式</span>
                   </a>
                 </span>
 
@@ -300,8 +310,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/09/21/helloworld/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/21/helloworld/" itemprop="commentsCount"></span>
+                <a href="/2016/10/10/bugs-in-uboot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/10/bugs-in-uboot/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -324,27 +334,8 @@
       
 
       
-        <p><img src="http://odv98ux2r.bkt.clouddn.com/0917AMSTERDAM.jpg" alt="阿姆斯特丹的夜景"></p>
-<h2 id="Back-to-the-Netherlands"><a href="#Back-to-the-Netherlands" class="headerlink" title="Back to the Netherlands"></a>Back to the Netherlands</h2><p>八月二十二号回的荷兰，明天就正好一个月了。回国前心心念念暑假这两个月要好好学习，毕竟毕业就要找工作，结果是暑假完完全全荒废玩掉了。现在后悔也没有用了，不过要是两个月利用起来的话，可以学习很多知识。<br>暑假这两个月也没去多少地方，回广西老家花了大半个月。陪爸妈去广西北海和涠洲岛玩了五天。之后也没有出去旅游，基本都是和高中同学在南京厮混。对于南京这座城市感觉有千千万万的不舍，毕竟是非常熟悉的故乡，哪里好吃哪里好玩都是了熟于心。  </p>
-<p>说说呆了一年多的荷兰吧，我的大学在一个僻静的小城市，恩斯赫德。虽说这座城市的名头是荷兰东部最大的城市，但是跟国内城市比起来只能算个村。想在回想起来一年来的点点滴滴觉得过得太快了。硕士第一年就是上课，挣满六十学分，但是也是非常忙。荷兰的大学三个月一个学期，所以一年有四个学期，每个学期平均要学三门课，这就意味着上三个月就要考一次期末考试。说实话一开始真的很担心考试能不能过，后来才发现亚洲学生真的在学习方面有天赋，完全不用担心考试不过。<br>荷兰这里的大学分为两类，一类是H类，重视动手实践，以就业为导向的学校；一类是U类，重视研究能力，以学术为导向。我们大学是U类大学，但是其实我个人更想去H类大学。经过一年的学习发现U类学的都是非常高层的知识，比如软件架构，建模对性能进行分析等等非常抽象的课程，感觉并不是以就业为导向，所以想要能找到工作的话，还是要靠自学。但是回想起自己大四刚毕业那时的什么都不懂，到现在能对计算机软件硬件有更加感性的认识，也可以说这些课程也没有白上吧。  </p>
-<h2 id="Nowadays"><a href="#Nowadays" class="headerlink" title="Nowadays"></a>Nowadays</h2><p>从九月一号开始我就开始了为期三个月的实习。这个实习是包括在两年的硕士项目里的，当初也是看好这个机会所以选择了荷兰。实习公司是大学所在城市的一家研发医疗用品的科技公司。感觉公司牛掰的地方是那些大型的精密的手术用的医疗器械，然而我的实习跟这些高端的产品没什么关系，我的题目是为一个无线血压计搭建软件平台。<br>具体用到的技术是在嵌入式Linux下的Qt框架开发，用的比较多的就是Qt的多线程。软件的工作流程比较明晰，从三种传感器采集数据，经过算法处理后加密，通过WiFi或蓝牙传到平板电脑的客户端软件中。平板上的软件开发是由其他公司负责，我的主要任务就是对 ARM 处理器编程，使其能够完成上述功能。<br>项目到现在经历了三周，这三周的工作基本上就是对软件的架构进行设计。我对这块并不是很感兴趣，因为比较喜欢动手的操作。但是也感到软件架构这个东西对成品的质量起着关键性的作用，所以也想使框架更加完善、清楚。但是深感面向对象思想并不是那么容易应用到实际当中的，要想把它运用得准确同时高效，还是需要很多开发经验的。<br>下周要向软件组里的同事展示我的架构，希望可以蒙混过关，赶紧进入实际实现的环节。<br>BTW，现在睡眠真的太缺乏了，去年有时候没课都能睡到中午，现在每天就只能睡七八个小时，中午还不能睡。很多人都说我憔悴了，哎。虽然每天起床的时候都很痛苦，想到的第一件事就是今天一定要早睡，结果每天还是不能在十点半之前躺上床。一定要慢慢改过来。  </p>
-<h2 id="Old-Friends"><a href="#Old-Friends" class="headerlink" title="Old Friends"></a>Old Friends</h2><p>上周末去了阿姆斯特丹玩耍，题图就是在阿姆北边的高楼上拍的，见了去年经常一起玩的同学。去年我们玩得好的那一帮同学大概有七八个，但是今年要么是因为EIT项目去了别的学校，要么就是去了外地实习，现在还在身边的就剩一个室友。回想起去年的时光，心里还是非常不舍的。时不时的深夜饮酒畅谈，时不时的火锅聚会，还有大家一起去周边国家旅游，好像生活中很大的乐趣都来自于这些活动。今年还不知道怎么样，不管怎么样，应该不会有去年那么开心了。朋友走了，要面临毕业就业的压力了。人在过得不那么开心的时候对过往会更加怀念。<br>不过幸好我还是个乐观的人，现在唯一的办法就是大步向前走吧，朋友们，珍重吧。  </p>
-<h2 id="Plan"><a href="#Plan" class="headerlink" title="Plan"></a>Plan</h2><p>这一年应该是人生中十分关键的一年。毕业，就业，两件大事摆在面前。说实话当初选择出国读研的动机就是暂缓一下就业压力，而现在已经没有办法回避了，只能硬着头皮上了。<br>对这一年大概有如下打算：    </p>
-<ul>
-<li>学习数据结构与算法  </li>
-<li>巩固C/C++编程能力  </li>
-<li>扩展在实习中所用到的知识，包括Linux/多线程/网络等方面的知识  </li>
-<li>每天一小时学习上述内容  </li>
-<li>尽量寻找贴近就业的毕业设计，最好是那种可以做出实物的  </li>
-<li>努力工作，珍惜时间，争取按时毕业回国赶秋招  </li>
-</ul>
-<p>加油吧少年。  </p>
-<h2 id="Last"><a href="#Last" class="headerlink" title="Last"></a>Last</h2><p>没想到第一篇博文就写了这么久，不过也是对去年做了个总结吧。希望今年一切顺利，能让我贯彻</p>
-<blockquote>
-<p>用五六分的力气，过刚刚好的生活。   </p>
-</blockquote>
-<p>这样的精神。</p>
-<p>Cheers, Marc 2016/09/21</p>
+        <p>前几天在移植 <code>U-Boot 2016.09.01</code> 的过程中遇到一个问题，是关于 U-Boot 下的环境变量的。<br>想实现 <code>TFTP</code> 功能，需要在环境变量中写 <code>DM9000</code> 的 MAC 地址。使用 <code>set</code> 写入并没有问题，写入后直接使用 <code>tftp</code> 也可以正常运作。但是板子一复位就不能启动了，控制台也没有任何输出，只能重新刷入 <code>u-boot.bin</code> 文件。<br>起初以为是网卡驱动的问题，但是随后随便写入了一个环境变量，保存之后重启发现仍不能启动。看来和网卡驱动没有关系，是设置环境变量处出现了问题。随后在文件 <code>/include/configs/jz2440.h</code> 中定位到语句 <code>#define CONFIG_ENV_ADDR            (CONFIG_SYS_FLASH_BASE + 0x070000)</code>。这里的0x70000大小约为 448 KB，而查看 <code>u-boot.bin</code> 文件大小约为 520 KB，随着 U-Boot 版本的更新，其体积也必然会不断增大。考虑是不是地址太低，覆盖了程序代码区。于是在控制台中输入 <code>flinfo</code> 查看 NOR Flash 中的空间分布。输出如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">JZ2440 # flinfo                                                            </div><div class="line">                                                                                </div><div class="line">Bank # 1: CFI conformant flash (16 x 16)  Size: 2 MB in 35 Sectors              </div><div class="line">  AMD Standard command set, Manufacturer ID: 0xC2, Device ID: 0x2249            </div><div class="line">  Erase timeout: 16384 ms, write timeout: 1 ms                                  </div><div class="line">                                                                                </div><div class="line">  Sector Start Addresses:                                                       </div><div class="line">  00000000   RO   00004000   RO   00006000   RO   00008000   RO   00010000   RO </div><div class="line">  00020000   RO   00030000   RO   00040000   RO   00050000   RO   00060000   RO </div><div class="line">  00070000   RO   00080000   RO   00090000        000A0000        000B0000      </div><div class="line">  000C0000        000D0000        000E0000        000F0000        00100000      </div><div class="line">  00110000        00120000        00130000        00140000        00150000      </div><div class="line">  00160000        00170000        00180000        00190000        001A0000      </div><div class="line">  001B0000        001C0000        001D0000        001E0000        001F0000</div></pre></td></tr></table></figure></p>
+<p>从上即可看出从 <code>0x00000000</code> 到 <code>0x00080000</code> 均为程序代码区，若往里面写入环境变量必然会破坏代码区导致崩溃。<br>所以解决方案显而易见，将 <code>#define CONFIG_ENV_ADDR            (CONFIG_SYS_FLASH_BASE + 0x070000)</code> 中的 <code>0x070000</code> 改高，至少要大于 <code>0x00090000</code>。在此，我将其改成 ´0x120000´。写入环境变量后重启，仍能正常工作，问题解决。</p>
 
       
     </div>
@@ -367,7 +358,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/2015总结/" rel="tag">#2015总结</a>
+            <a href="/tags/U-Boot/" rel="tag">#U-Boot</a>
           
         </div>
       
@@ -376,17 +367,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/21/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2016/10/04/yocto-qt5-without-opengl/" rel="next" title="i.MX 7Dual Yocto Qt 5 Building Without OpenGL">
+                <i class="fa fa-chevron-left"></i> i.MX 7Dual Yocto Qt 5 Building Without OpenGL
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/30/U-Boot-移植/" rel="prev" title="U-Boot 相关前置知识">
-                U-Boot 相关前置知识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -412,8 +399,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/09/21/helloworld/"
-           data-title="复写HelloWorld()" data-url="http://yoursite.com/2016/09/21/helloworld/">
+      <div class="ds-thread" data-thread-key="2016/10/10/bugs-in-uboot/"
+           data-title="移植新版 U-Boot 过程中设置环境变量遇到的问题" data-url="http://yoursite.com/2016/10/10/bugs-in-uboot/">
       </div>
     
   </div>
@@ -515,7 +502,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Back-to-the-Netherlands"><span class="nav-number">1.</span> <span class="nav-text">Back to the Netherlands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nowadays"><span class="nav-number">2.</span> <span class="nav-text">Nowadays</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Old-Friends"><span class="nav-number">3.</span> <span class="nav-text">Old Friends</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plan"><span class="nav-number">4.</span> <span class="nav-text">Plan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Last"><span class="nav-number">5.</span> <span class="nav-text">Last</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
         </section>
