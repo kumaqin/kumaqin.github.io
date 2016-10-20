@@ -255,6 +255,138 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/20/issue-with-compiler-in-buiding-busybox/" itemprop="url">
+                  交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-20T17:44:14+02:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/嵌入式/" itemprop="url" rel="index">
+                    <span itemprop="name">嵌入式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/嵌入式/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/issue-with-compiler-in-buiding-busybox/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/issue-with-compiler-in-buiding-busybox/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>U-Boot、内核编译且运行成功好几天了，一直卡在编译 BusyBox 这。U-Boot 和内核的编译均采用 Ubuntu 系统中使用 <code>apt</code> 安装的 <code>arm-linux-gnueabihf</code> 编译器进行。（后来才知道没有必要用这个带 <code>hf</code> 的交叉编译器，因为使用时也会加上 <code>-mfloat-abi=soft</code> 参数使用软件浮点运算。）<br>将制作好的 <code>jffs2</code> 格式根目录镜像加载到 NAND 中启动，最终都会进入 kernel panic 状态，查询出错代码 <code>0x00000008</code> 发现时因为程序架构不符。遂使用 <code>readelf -A</code> 命令查询生成的 BusyBox 可执行文件的架构，发现是 <code>armv5t</code>，与 <code>S3C2440</code> 的 <code>armv4t</code> 架构不符。查询可正常运行的 Linux 内核中的可执行程序，使用的的确是 <code>armv4t</code> 架构。<br>之后进行了很多天的尝试，识图添加 <code>-march=armv4t</code> 参数将其转换成 <code>armv4t</code> 架构，然而 BusyBox 文件夹中生成的 <code>.o</code> 文件的确是 <code>armv4t</code> 架构，而最后连接出来的可执行文件却依然是 <code>armv5t</code>。之后发现连接的位于 <code>/usr/arm-linux-gnueabihf/lib</code> 中的 <code>libgcc.a</code> 是 <code>armv5t</code> 架构的。这就解释了无论怎么加参数最后连接出来的可执行文件依然是 <code>armv5t</code> 架构的。而编译 Linux 内核的过程中并不需要 <code>glibc</code> 库，所以内核可以正常运行。<br>查询了谷歌以后决定自己制作工具链。这也是费了一番周折，一开始打算手动建立，结果不知道将架构参数 <code>march=armv4t</code> 加在哪边最后生成的还是 <code>armv5t</code> 架构的 <code>glibc</code> 库。失败之后又使用了 <code>crosstool-NG</code> [<a href="http://crosstool-ng.org/" target="_blank" rel="external">点我</a>] 自动化工具构建交叉编译器。在 <code>menuconfig</code> 中加入对 CPU 架构的描述 <code>armv4t</code>，之后直接运行 <code>build</code> 命令就一次性通过了编译。自动化工具真是救星。<br>检查 <code>lib</code> 中的库文件架构的确是 <code>armv4t</code>。之后使用新的交叉编译器对 BusyBox进行编译后拷贝到 NAND 中，启动成功。<br>哎，实践的路上真的有很多坑。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/10/bugs-in-uboot/" itemprop="url">
                   移植新版 U-Boot 过程中设置环境变量遇到的问题
                 </a>
@@ -1265,7 +1397,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1273,7 +1405,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1282,7 +1414,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

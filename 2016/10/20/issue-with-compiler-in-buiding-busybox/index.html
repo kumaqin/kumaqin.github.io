@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ARM,Assembly," />
+  <meta name="keywords" content="ARM,Linux,BusyBox," />
 
 
 
@@ -84,22 +84,16 @@
 
 
 
-<meta name="description" content="寄存器直接寻址 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。 例如，MOV R1,R2  
-寄存器移位寻址 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。 MOV R0,R1,LSL #3，这条指令将 R1 的值左移三位，然后将结果放在 R0 中。  
-寄存器间接寻址 指令中的地址码给出的是一个通用寄存器的编号，指令所需的">
+<meta name="description" content="U-Boot、内核编译且运行成功好几天了，一直卡在编译 BusyBox 这。U-Boot 和内核的编译均采用 Ubuntu 系统中使用 apt 安装的 arm-linux-gnueabihf 编译器进行。（后来才知道没有必要用这个带 hf 的交叉编译器，因为使用时也会加上 -mfloat-abi=soft 参数使用软件浮点运算。）将制作好的 jffs2 格式根目录镜像加载到 NAND 中启动，最终">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ARM 汇编常用寻址方式">
-<meta property="og:url" content="http://yoursite.com/2016/10/02/arm-addressing/index.html">
+<meta property="og:title" content="交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器">
+<meta property="og:url" content="http://yoursite.com/2016/10/20/issue-with-compiler-in-buiding-busybox/index.html">
 <meta property="og:site_name" content="Marc's Blog">
-<meta property="og:description" content="寄存器直接寻址 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。 例如，MOV R1,R2  
-寄存器移位寻址 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。 MOV R0,R1,LSL #3，这条指令将 R1 的值左移三位，然后将结果放在 R0 中。  
-寄存器间接寻址 指令中的地址码给出的是一个通用寄存器的编号，指令所需的">
-<meta property="og:updated_time" content="2016-10-02T13:33:21.301Z">
+<meta property="og:description" content="U-Boot、内核编译且运行成功好几天了，一直卡在编译 BusyBox 这。U-Boot 和内核的编译均采用 Ubuntu 系统中使用 apt 安装的 arm-linux-gnueabihf 编译器进行。（后来才知道没有必要用这个带 hf 的交叉编译器，因为使用时也会加上 -mfloat-abi=soft 参数使用软件浮点运算。）将制作好的 jffs2 格式根目录镜像加载到 NAND 中启动，最终">
+<meta property="og:updated_time" content="2016-10-20T16:12:57.413Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ARM 汇编常用寻址方式">
-<meta name="twitter:description" content="寄存器直接寻址 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。 例如，MOV R1,R2  
-寄存器移位寻址 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。 MOV R0,R1,LSL #3，这条指令将 R1 的值左移三位，然后将结果放在 R0 中。  
-寄存器间接寻址 指令中的地址码给出的是一个通用寄存器的编号，指令所需的">
+<meta name="twitter:title" content="交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器">
+<meta name="twitter:description" content="U-Boot、内核编译且运行成功好几天了，一直卡在编译 BusyBox 这。U-Boot 和内核的编译均采用 Ubuntu 系统中使用 apt 安装的 arm-linux-gnueabihf 编译器进行。（后来才知道没有必要用这个带 hf 的交叉编译器，因为使用时也会加上 -mfloat-abi=soft 参数使用软件浮点运算。）将制作好的 jffs2 格式根目录镜像加载到 NAND 中启动，最终">
 
 
 
@@ -120,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/02/arm-addressing/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/20/issue-with-compiler-in-buiding-busybox/"/>
 
-  <title> ARM 汇编常用寻址方式 | Marc's Blog </title>
+  <title> 交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器 | Marc's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -262,7 +256,7 @@
             
             
               
-                ARM 汇编常用寻址方式
+                交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器
               
             
           </h1>
@@ -274,8 +268,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-02T15:24:20+02:00" content="2016-10-02">
-              2016-10-02
+            <time itemprop="dateCreated" datetime="2016-10-20T17:44:14+02:00" content="2016-10-20">
+              2016-10-20
             </time>
           </span>
 
@@ -288,8 +282,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
-                    <span itemprop="name">学习</span>
+                  <a href="/categories/嵌入式/" itemprop="url" rel="index">
+                    <span itemprop="name">嵌入式</span>
                   </a>
                 </span>
 
@@ -300,8 +294,8 @@
 
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/学习/嵌入式/" itemprop="url" rel="index">
-                    <span itemprop="name">嵌入式</span>
+                  <a href="/categories/嵌入式/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -316,8 +310,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/10/02/arm-addressing/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/02/arm-addressing/" itemprop="commentsCount"></span>
+                <a href="/2016/10/20/issue-with-compiler-in-buiding-busybox/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/issue-with-compiler-in-buiding-busybox/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -340,21 +334,7 @@
       
 
       
-        <ol>
-<li>寄存器直接寻址<br> 操作数的值直接放在寄存器中，指令中的地址码字段指出的是寄存器编号，指令执行时直接取出寄存器值来操作。<br> 例如，<code>MOV R1,R2</code>  </li>
-<li>寄存器<strong>移位</strong>寻址<br> 例如，操作数 2 先进行位移操作，然后再与第一个操作数进行操作。<br> <code>MOV R0,R1,LSL #3</code>，这条指令将 <strong><code>R1</code> 的值</strong>左移三位，然后将结果放在 <code>R0</code> 中。  </li>
-<li>寄存器间接寻址<br> 指令中的地址码给出的是一个通用寄存器的编号，指令所需的操作数保存在寄存器指定地址的存储单元中，即寄存器为操作数的<strong>地址指针</strong>。<br> 例如，<code>LDR R1,[R2]</code>，这条指令将 <code>R2</code> 指向的存储单元中的数据读出保存在 <code>R1</code> 中。  </li>
-<li>基址寻址<br> 将基址寄存器的内容与指令中给出的偏移量相加，形成操作数的有效地址，常用于查表和数组操作。<br> 例如，<code>LDR R2,[R3,#0X0C]</code>，此语句将 <code>R3+0X0C</code> 处的数据存放到 <code>R2</code> 寄存器中。</li>
-<li>立即寻址<br> 立即寻址中，操作码字段后面的部分不是操作数地址而是操作数本身。<br> 例如，<code>MOV R1,#0XAA</code>，此语句将立即数 <code>0XAA</code> 存放到寄存器 <code>R0</code> 中。</li>
-</ol>
-<p>补充：叹号的用法  </p>
-<ol>
-<li><p><code>pre-indexed addressing</code>，先进行方括号中的操作并写回方括号中的第一个操作数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ldr r2, [r1, #12]! @ r1 ← r1 + 12 then r2 ← *r1</div><div class="line">ldr r2, [r0, r1]! @ r0 ← r0 + r1 then r2 ← *r0</div><div class="line">ldr r2, [r0, r1, lsl #2]! @ r0 ← r0 + r1*4 then r2 ← *r0</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>post-indexed addressing</code>，先赋值，再操作  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">str r2, [r1], +4 @ *r1 ← r2 then r1 ← r1 + 4</div><div class="line">str r0, [r1], r2 @ *r1 ← r0 then r1 ← r1 + r2 </div><div class="line">ldr r0, [r1], r2, lsl #3 @ r0 ← *r1 then r1 ← r1 + r2*8</div></pre></td></tr></table></figure></li>
-</ol>
+        <p>U-Boot、内核编译且运行成功好几天了，一直卡在编译 BusyBox 这。U-Boot 和内核的编译均采用 Ubuntu 系统中使用 <code>apt</code> 安装的 <code>arm-linux-gnueabihf</code> 编译器进行。（后来才知道没有必要用这个带 <code>hf</code> 的交叉编译器，因为使用时也会加上 <code>-mfloat-abi=soft</code> 参数使用软件浮点运算。）<br>将制作好的 <code>jffs2</code> 格式根目录镜像加载到 NAND 中启动，最终都会进入 kernel panic 状态，查询出错代码 <code>0x00000008</code> 发现时因为程序架构不符。遂使用 <code>readelf -A</code> 命令查询生成的 BusyBox 可执行文件的架构，发现是 <code>armv5t</code>，与 <code>S3C2440</code> 的 <code>armv4t</code> 架构不符。查询可正常运行的 Linux 内核中的可执行程序，使用的的确是 <code>armv4t</code> 架构。<br>之后进行了很多天的尝试，识图添加 <code>-march=armv4t</code> 参数将其转换成 <code>armv4t</code> 架构，然而 BusyBox 文件夹中生成的 <code>.o</code> 文件的确是 <code>armv4t</code> 架构，而最后连接出来的可执行文件却依然是 <code>armv5t</code>。之后发现连接的位于 <code>/usr/arm-linux-gnueabihf/lib</code> 中的 <code>libgcc.a</code> 是 <code>armv5t</code> 架构的。这就解释了无论怎么加参数最后连接出来的可执行文件依然是 <code>armv5t</code> 架构的。而编译 Linux 内核的过程中并不需要 <code>glibc</code> 库，所以内核可以正常运行。<br>查询了谷歌以后决定自己制作工具链。这也是费了一番周折，一开始打算手动建立，结果不知道将架构参数 <code>march=armv4t</code> 加在哪边最后生成的还是 <code>armv5t</code> 架构的 <code>glibc</code> 库。失败之后又使用了 <code>crosstool-NG</code> [<a href="http://crosstool-ng.org/" target="_blank" rel="external">点我</a>] 自动化工具构建交叉编译器。在 <code>menuconfig</code> 中加入对 CPU 架构的描述 <code>armv4t</code>，之后直接运行 <code>build</code> 命令就一次性通过了编译。自动化工具真是救星。<br>检查 <code>lib</code> 中的库文件架构的确是 <code>armv4t</code>。之后使用新的交叉编译器对 BusyBox进行编译后拷贝到 NAND 中，启动成功。<br>哎，实践的路上真的有很多坑。</p>
 
       
     </div>
@@ -379,7 +359,9 @@
           
             <a href="/tags/ARM/" rel="tag">#ARM</a>
           
-            <a href="/tags/Assembly/" rel="tag">#Assembly</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/BusyBox/" rel="tag">#BusyBox</a>
           
         </div>
       
@@ -388,17 +370,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/30/U-Boot-移植/" rel="next" title="U-Boot 相关前置知识">
-                <i class="fa fa-chevron-left"></i> U-Boot 相关前置知识
+              <a href="/2016/10/10/bugs-in-uboot/" rel="next" title="移植新版 U-Boot 过程中设置环境变量遇到的问题">
+                <i class="fa fa-chevron-left"></i> 移植新版 U-Boot 过程中设置环境变量遇到的问题
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/04/yocto-qt5-without-opengl/" rel="prev" title="i.MX 7Dual Yocto Qt 5 Building Without OpenGL">
-                i.MX 7Dual Yocto Qt 5 Building Without OpenGL <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -424,8 +402,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/02/arm-addressing/"
-           data-title="ARM 汇编常用寻址方式" data-url="http://yoursite.com/2016/10/02/arm-addressing/">
+      <div class="ds-thread" data-thread-key="2016/10/20/issue-with-compiler-in-buiding-busybox/"
+           data-title="交叉编译 BusyBox 遇到的问题以及构建 S3C2440 所用的交叉编译器" data-url="http://yoursite.com/2016/10/20/issue-with-compiler-in-buiding-busybox/">
       </div>
     
   </div>
